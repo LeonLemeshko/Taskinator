@@ -176,11 +176,11 @@ footer {
   margin: 0;
   border: 2px solid var(--grey);
   border-radius: 12px;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
+  -moz-appearance: none; /* lets us manually handle it*/
+  -webkit-appearance: none; /* lets us manually handle it*/
+  appearance: none; /* lets us manually handle it*/
   background-color: #fff;
-  /* background-image: url("../images/select-arrow.svg"); */
+  background-image: url("../images/select-arrow.svg");
   background-repeat: no-repeat, repeat;
   background-position: right 0.7em top 50%, 0 0;
   background-size: 0.65em auto, 100%;
