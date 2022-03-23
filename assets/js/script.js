@@ -43,3 +43,4 @@ const createTaskHandler = (event) => {
 // since the 'button' element's type = submit, the submit of this button ro the 
 // enter key will run the createTaskHandler() that adds a new list itemEl. 
 formEl.addEventListener('submit', createTaskHandler);
+console.log('password test');
