@@ -1,11 +1,10 @@
 
 
 // this is the add task button that we will reference with click action 
-const formEl = document.querySelector('#task-form') // or ("#save-task")
-// this is the <ul> that we will target for reference and manipulation
+const formEl = document.querySelector('#task-form') 
 let tasksToDoEl = document.querySelector('.task-list'); // or ("#tasks-to-do")
 
-const createTaskHandler = (event) => {
+const taskFormHandler = (event) => {
 
     // this event argument voids default browser protocol 
     event.preventDefault();
@@ -13,11 +12,19 @@ const createTaskHandler = (event) => {
     const taskNameInput = document.querySelector("input[name='task-name']").value;
     const taskTypeInput = document.querySelector("select[name='task-type']").value;
 
-    // this also allowed us to find the value property in the El Obj
-    // finding this property means we can use it to be assigned to listItemEl.
-    console.dir(taskNameInput); // console.log would not give enough info on the El
-    console.dir(taskTypeInput)
+    // package up data as an object
+    const taskDataObj = {
+        name: taskNameInput,
+        type: taskTypeInput
+    };
     
+    // send it as an argument to createTaskEl
+    createTaskEl(taskDataObj); // calling createTaskEl() in this () is the only way to pass in taskDataObj as an arg in createTaskEl().
+
+    console.dir(`taskName: ${taskNameInput} | taskType: ${taskTypeInput}`); // taskName: xxxxx | taskType: xxxxx
+};
+
+const createTaskEl = (taskDataObj) => {
     // create list item
     const listItemEl = document.createElement('li');
     listItemEl.className = 'task-item';
@@ -25,22 +32,16 @@ const createTaskHandler = (event) => {
     // create div to hold task info and add to list item
     const taskInfoEl = document.createElement('div');
     taskInfoEl.className = 'task-info';
-
-    // add HTML content to the div
-    taskInfoEl.innerHTML = "<h3 class = 'task-name'>" + taskNameInput + "</h3><span class = 'task-type'>" + taskTypeInput + "</span>";
+    taskInfoEl.innerHTML = "<h3 class = 'task-name'>" + taskDataObj.name + "</h3><span class = 'task-type'>" + taskDataObj.type + "</span>";
     listItemEl.appendChild(taskInfoEl);
 
     // add entire list item to list
     tasksToDoEl.appendChild(listItemEl); 
-    // this will append the element as the last
-    // child automatically every time the click function is operated. This appends
-    // listItemEl to the tasksToDoEl on every submit along with its set properties.
-    // and this appends taskInfoEl div El on every submit along with its set properties
 
-    console.dir(listItemEl);
+    // console.dir(listItemEl);
 };
-// this is an event listener with the call back function 'createTaskHandler'
+
+// this is an event listener with the call back function 'taskFormHandler'
 // since the 'button' element's type = submit, the submit of this button ro the 
-// enter key will run the createTaskHandler() that adds a new list itemEl. 
-formEl.addEventListener('submit', createTaskHandler);
-console.log('password test');
+// enter key will run the taskFormHandler() that adds a new list itemEl. 
+formEl.addEventListener('submit', taskFormHandler);
