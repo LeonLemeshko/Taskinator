@@ -12,6 +12,15 @@ const taskFormHandler = (event) => {
     const taskNameInput = document.querySelector("input[name='task-name']").value;
     const taskTypeInput = document.querySelector("select[name='task-type']").value;
 
+    // check if input values are empty strings
+    if(!taskNameInput || !taskTypeInput) {
+        alert('You need to fill out the task form!');
+        return false;
+    }
+        // this will reset the task form box to avoid manually having to erase what you wrote to create a new one.
+        // the reset() method was designed specifically for the <form> element and won't on any other element.
+        formEl.reset();
+
     // package up data as an object
     const taskDataObj = {
         name: taskNameInput,
