@@ -12,10 +12,12 @@
         <h1 class="page-title">Taskinator</h1>
         <p>Click the button below to add a new task!</p>    
         <form id = 'task-form'>
+            <!-- // TEXT INPUT FORM BOX -->
             <div class="form-group">
                 <input type="text" name="task-name" class='text-input' placeholder="Enter Task Name">
             </div>
 
+            <!-- // THE DROP DOWN SELECTION LIST  -->
             <div class="form-group">
                 <select name="task-type" class="select-dropdown">
                     <option value="" disabled selected> Pick a task type</option>
@@ -26,22 +28,40 @@
             </div>
 
             <!-- // div and section are container elements -->
+            <!-- // THE ACTIVATE BUTTON THAT CREATES A LIST ITEM FROM TEXT INPUT -->
             <div class="form-group"> 
                 <button class="btn" id="save-task" type="submit">Add Task</button>
             </div>
         </form>
     </header>
 
-    <main class="page-content">
-
+    <main class="page-content" id="page-content">
     <!-- Because we need the task list heading and the task list itself to always render together, we will wrap them in a <section> element. -->
+
+        <!-- These sections will be displayed out as columns by way of css styling using Flexbox using the 
+        class 'page-content' from the <main> element. -->
+
+        <!-- Task Input -->
         <section class="task-list-wrapper">
             <h2 class="list-title">Tasks To Do</h2>
             <ul class="task-list" id="tasks-to-do"></ul>
         </section>
 
         <!-- Tasks In Progress -->
+        <section class="task-list-wrapper">
+            <h2 class="list-title">Tasks In Progress</h2>
+            <ul class="task-list" id="tasks-in-progress">
+                <!-- < li elements will be generated through the DOM by use of JS > -->
+            </ul>
+        </section>
 
+         <!-- Tasks Completed -->
+         <section class="task-list-wrapper">
+            <h2 class="list-title">Tasks Completed</h2>
+            <ul class="task-list" id="tasks-completed">
+                <!-- < li elements will be generated through the DOM by use of JS > -->
+            </ul>
+        </section>
     </main>
 
     <footer>
