@@ -181,17 +181,22 @@ const editTask = (taskId) => {
   const taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
   // get content from task name and type
-  const taskName = taskSelected.querySelector('h3.task-name').textContent;
-  console.log(taskName);
+  const taskName = taskSelected.querySelector("h3.task-name").textContent;
+  // console.log(taskName);
 
-  const taskType = taskSelected.querySelector('span.task-type').textContent;
-  console.log(taskType);
+  const taskType = taskSelected.querySelector("span.task-type").textContent;
+  // console.log(taskType);
 
-  console.log('editing task #' + taskId); // editing task #0
-  console.log(taskSelected); // prints the DOM of the the listItemEl
-  console.log(taskId); // 0
-  // CONTROL F THE LINE BELOW WHEN RETURNING TO STUDY
-  // In the past, we've used querySelector() with the document object, 
+  document.querySelector("input[name='task-name']").value = taskName;
+  document.querySelector("select[name='task-type']").value = taskType; // ??? is not appearing in form input taskType
+  document.querySelector('#save-task').textContent = 'Save Task';
+
+  formEl.setAttribute('data-task-id', taskId);
+
+
+  // console.log('editing task #' + taskId); // editing task #0
+  // console.log(taskSelected); // prints the DOM of the the listItemEl
+  // console.log(taskId); // 0
 }
 
     // EVENT LISTENERS AND CONSOLE LOGS
