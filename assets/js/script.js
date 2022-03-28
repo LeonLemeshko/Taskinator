@@ -146,31 +146,51 @@ const createTaskEl = (taskDataObj) => { // using the taskDataObj from taskFormHa
 formEl.addEventListener("submit", taskFormHandler);
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-// FUNCTION - 
+// FUNCTION - used the manage all the task buttons
 // ---------------------------------------------------------------------------------------------------------------------------------
 const taskButtonHandler = (event) => {
-  console.log(event.target); // reports the element on which the event occurs, the 'click' event.
+  // console.log(event.target); // reports the element on which the event occurs, the 'click' event.
+    // Get target element from event
+    const targetEl = event.target;
 
-  if (event.target.matches('.delete-btn')) { // this is a method to check that assigned events match according to their id's.
-      // get the element's task id
-      // console.log('You have clicked a delete button!');
-
-      let taskId = event.target.getAttribute('data-task-id');
-      // console.log(taskId) //  returns a number that corresponds to the data-task-id attribute on the HTML element itself
-      deleteTask(taskId); //  returns a number that corresponds to the data-task-id attribute on the HTML element itself and is coming from deleteTask() instead.
-  }
+    // Edit Button was clicked
+    if (targetEl.matches('.edit-btn')) {
+      let taskId = targetEl.getAttribute('data-task-id');
+      editTask(taskId);
+    }
+    // Delete Button was clicked
+    else if (targetEl.matches('.delete.btn')) {
+      let taskId = targetEl.getAttribute('data-task-id');
+      deleteTask(taskId);  
+    }
 };
 
-// FUNCTION - CREATE TASK ACTIONS
+// FUNCTION - DELETE TASK ACTION
 // ---------------------------------------------------------------------------------------------------------------------------------
 const deleteTask = (taskId) => { // call this function from taskButtonHandler()
   const taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
   // console.log(taskSelected);
   // console.log(taskId);
-  taskSelected.remove();
+  taskSelected.remove(); // makes the delete button actually delete
 };
 
+// FUNCTION - EDIT TASK ACTION
+// ---------------------------------------------------------------------------------------------------------------------------------
+const editTask = (taskId) => {
+  // get task list item element
+  const taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
+  // get content from task name and type
+  const taskName = taskSelected.querySelector('h3.task-name').textContent;
+  console.log(taskName);
+
+  const taskType = taskSelected.querySelector('span.task-type').textContent;
+  console.log(taskType);
+
+  console.log('editing task #' + taskId); // editing task #0
+  console.log(taskSelected); // prints the DOM of the the listItemEl
+  console.log(taskId); // 0
+}
 
     // EVENT LISTENERS AND CONSOLE LOGS
 // ---------------------------------------------------------------------------------------------------------------------------------
