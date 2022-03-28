@@ -9,6 +9,7 @@
   
   // GLOBAL SCOPE
 // ---------------------------------------------------------------------------------------------------------------------------------
+const pageContentEl = document.querySelector('#page-content'); // so the <main> element can delegate the click responsibility since there will be delete.. buttons in all columns
 let taskIdCounter = 0;
 const formEl = document.querySelector("#task-form");
 const tasksToDoEl = document.querySelector("#tasks-to-do");
@@ -143,3 +144,35 @@ const createTaskEl = (taskDataObj) => { // using the taskDataObj from taskFormHa
     // EVENT LISTENERS AND CONSOLE LOGS
 // ---------------------------------------------------------------------------------------------------------------------------------
 formEl.addEventListener("submit", taskFormHandler);
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+// FUNCTION - 
+// ---------------------------------------------------------------------------------------------------------------------------------
+const taskButtonHandler = (event) => {
+  console.log(event.target); // reports the element on which the event occurs, the 'click' event.
+
+  if (event.target.matches('.delete-btn')) { // this is a method to check that assigned events match according to their id's.
+      // get the element's task id
+      // console.log('You have clicked a delete button!');
+
+      let taskId = event.target.getAttribute('data-task-id');
+      // console.log(taskId) //  returns a number that corresponds to the data-task-id attribute on the HTML element itself
+      deleteTask(taskId); //  returns a number that corresponds to the data-task-id attribute on the HTML element itself and is coming from deleteTask() instead.
+  }
+};
+
+// FUNCTION - CREATE TASK ACTIONS
+// ---------------------------------------------------------------------------------------------------------------------------------
+const deleteTask = (taskId) => { // call this function from taskButtonHandler()
+  const taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  // console.log(taskSelected);
+  // console.log(taskId);
+  taskSelected.remove();
+};
+
+
+
+    // EVENT LISTENERS AND CONSOLE LOGS
+// ---------------------------------------------------------------------------------------------------------------------------------
+pageContentEl.addEventListener('click', taskButtonHandler);
+//  If an element that has parent elements is clicked, the click event bubbles, or travels, upwards to its parents.
