@@ -41,10 +41,21 @@ const taskFormHandler = (event) => {
   document.querySelector("input[name='task-name']").value = "";
   document.querySelector("select[name='task-type']").selectedIndex = 0;
 
-  const taskDataObj = {
-    name: taskNameInput,
-    type: taskTypeInput
-  };
+  // check element for certain attribute
+  const isEdit = formEl.hasAttribute('data-task-id');
+  // console.log(isEdit)
+    // has data attribute, so get task id and call function to complete edit process
+    if (isEdit) {
+      let taskId = formEl.getAttribute('data-task-id');
+      completeEditTask(taskNameInput, taskTypeInput, taskId);
+    } 
+    // no data attribute, so create object as normal and pass to createTaskEl()
+    else {
+      var taskDataObj = {
+        name: taskNameInput,
+        type: taskTypeInput
+      };
+    };
 
   createTaskEl(taskDataObj);
 };
@@ -65,8 +76,9 @@ const createTaskEl = (taskDataObj) => { // using the taskDataObj from taskFormHa
   // below in (taskInfoEl.innerHTML) we are accessing the taskDataObj key value pair properties when setting inner.HTML.
   const taskInfoEl = document.createElement("div");
   taskInfoEl.className = "task-info";
-  taskInfoEl.innerHTML = `<h3 class='task-name'> ${taskDataObj.name} </h3>  
-                          <span class='task-type'> ${taskDataObj.type} </span>`;
+  // taskInfoEl.innerHTML = `<h3 class='task-name'> ${taskDataObj.name} </h3>  // this format will break the code 
+  //                         <span class='task-type'> ${taskDataObj.type} </span>`; // this format will break the code
+  taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
   listItemEl.appendChild(taskInfoEl);
 
     // add the buttons and select drop down options applied to them in the newly created div in createTaskActions()
@@ -178,13 +190,13 @@ const deleteTask = (taskId) => { // call this function from taskButtonHandler()
 // ---------------------------------------------------------------------------------------------------------------------------------
 const editTask = (taskId) => {
   // get task list item element
-  const taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  let taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
   // get content from task name and type
-  const taskName = taskSelected.querySelector("h3.task-name").textContent;
+  let taskName = taskSelected.querySelector("h3.task-name").textContent;
   // console.log(taskName);
 
-  const taskType = taskSelected.querySelector("span.task-type").textContent;
+  let taskType = taskSelected.querySelector("span.task-type").textContent;
   // console.log(taskType);
 
   document.querySelector("input[name='task-name']").value = taskName;
@@ -197,7 +209,25 @@ const editTask = (taskId) => {
   // console.log('editing task #' + taskId); // editing task #0
   // console.log(taskSelected); // prints the DOM of the the listItemEl
   // console.log(taskId); // 0
-}
+};
+
+// FUNCTION - EDIT TASK ACTION
+// ---------------------------------------------------------------------------------------------------------------------------------
+const completeEditTask = (taskName, taskType, taskId) => { // this parameter should be logged into the console after firing edit
+  // console.log(taskName, taskType, taskId);
+     let taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']")
+
+  // set new values
+    taskSelected.querySelector('h3.task-name').textContent = taskName;
+    taskSelected.querySelector('span.task-type').textContent = taskType;
+
+    alert('Task Updated!');
+
+    //  reset the form by removing the task id and changing the button text back to normal
+    formEl.removeAttribute('data-task-id');
+    document.querySelector('#save-task').textContent = 'Add Task';
+};
+
 
     // EVENT LISTENERS AND CONSOLE LOGS
 // ---------------------------------------------------------------------------------------------------------------------------------
