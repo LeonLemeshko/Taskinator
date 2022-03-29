@@ -79,12 +79,17 @@ const createTaskEl = (taskDataObj) => {
   taskDataObj.id = taskIdCounter; // This will set its id to the taskCounter var which actively counts up 
   tasks.push(taskDataObj) // This will push the new set id to the taskDataObj object array
 
+  // SAVE TASKS TO LOCAL STORAGE
+  saveTasks();
+
   // INCREASE TASK COUNTER FOR NEXT UNIQUE ID
   taskIdCounter++;
 
   // CHECK THAT NEW taskDataObj PROPERTY GETS TO THE FUNCTION VIA THE taskDataObj PARAMETER THAT WE SET UP
   console.log(taskDataObj); // submit a new task to check
   console.log(taskDataObj.status); // submit a new task to check
+
+  
 };
 
 
@@ -154,11 +159,12 @@ const completeEditTask = (taskName, taskType, taskId) => { // this parameter sho
       tasks[i].name = taskName;
       tasks[i].type = taskType;
     }
-  };
+  }
 
+    // SAVE TASKS TO LOCAL STORAGE
+    saveTasks();
 
   alert("Task Updated!");
-
 
 
   // reset the form by removing the task id and changing the button text back to normal
@@ -167,6 +173,7 @@ const completeEditTask = (taskName, taskType, taskId) => { // this parameter sho
 
   // UPDATE formEl button to go back to saying 'Add Task' instead of 'Edit Task'
   formEl.querySelector("#save-task").textContent = "Add Task";
+  
 };
 
 // FUNCTION - used the manage all the task buttons
@@ -233,6 +240,9 @@ const taskStatusChangeHandler = (event) => {
     }
     // VERIFY TASKS UPDATE IN TASK ARRAY
     console.log(tasks);
+
+    // SAVE TASKS TO LOCAL STORAGE
+    saveTasks();
 };
 
 // FUNCTION - EDIT TASK ACTION
@@ -282,7 +292,21 @@ const deleteTask = (taskId) => { // call this function from taskButtonHandler()
 
   // reassign tasks array to be the same as updatedTaskArr
   tasks = updatedTaskArr; 
+
+  // SAVE TASKS TO LOCAL STORAGE
+  saveTasks();
 };
+
+// FUNCTION - LOCAL STORAGE FUNCTION
+// LOCAL STORAGE METHODS - setItem() & getItem()
+// setItem() saves data to local storage
+// getItem() retrieves data from local storage?
+// ---------------------------------------------------------------------------------------------------------
+const saveTasks = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks)); // json = js object notation
+  // json is a means of organizing and structuring data thats transferred from one place to another
+}
+
 
 // EVENT LISTENERS AND CONSOLE LOGS
 // ---------------------------------------------------------------------------------------------------------------------------------
