@@ -10,6 +10,7 @@
   // GLOBAL SCOPE
 // ---------------------------------------------------------------------------------------------------------------------------------
 let taskIdCounter = 0;
+const tasks = []; // task objects array
 
 const formEl = document.querySelector("#task-form");
 const tasksToDoEl = document.querySelector("#tasks-to-do");
@@ -36,15 +37,16 @@ const taskFormHandler = (event) => {
   document.querySelector("select[name='task-type']").selectedIndex = 0;
 
   // check if task is new or one being edited by seeing if it has a data-task-id attribute
+  // so get task id and call function to complete edit process
   const isEdit = formEl.hasAttribute("data-task-id");
-  // has data attribute, so get task id and call function to complete edit process
   if (isEdit) {
     let taskId = formEl.getAttribute("data-task-id");
     completeEditTask(taskNameInput, taskTypeInput, taskId);
   } else {
     let taskDataObj = {
       name: taskNameInput,
-      type: taskTypeInput
+      type: taskTypeInput,
+      status: 'to do'
     };
 
     createTaskEl(taskDataObj);
@@ -73,8 +75,16 @@ const createTaskEl = (taskDataObj) => {
   listItemEl.appendChild(taskActionsEl);
   tasksToDoEl.appendChild(listItemEl);
 
+  // ADD ID VALUE AS A PROPERTY TO THE taskDataObj ARGUMENT VARIABLE AND ADD ENTIRE OBJECT TO THE tasks ARRAY
+  taskDataObj.id = taskIdCounter; // This will set its id to the taskCounter var which actively counts up 
+  tasks.push(taskDataObj) // This will push the new set id to the taskDataObj object array
+
   // INCREASE TASK COUNTER FOR NEXT UNIQUE ID
   taskIdCounter++;
+
+  // CHECK THAT NEW taskDataObj PROPERTY GETS TO THE FUNCTION VIA THE taskDataObj PARAMETER THAT WE SET UP
+  console.log(taskDataObj); // submit a new task to check
+  console.log(taskDataObj.status); // submit a new task to check
 };
 
 
@@ -138,7 +148,18 @@ const completeEditTask = (taskName, taskType, taskId) => { // this parameter sho
   taskSelected.querySelector("h3.task-name").textContent = taskName;
   taskSelected.querySelector("span.task-type").textContent = taskType;
 
+  // LOOP THROUGH TASKS ARRAY AND TASK OBJECT WITH NEW CONTENT
+  for (let i = 0; i < tasks.length; i++) {
+    if(tasks[i].id === parseInt(taskId)) { // (taskId) is a string, so we convert it to a number for comparison 
+      tasks[i].name = taskName;
+      tasks[i].type = taskType;
+    }
+  };
+
+
   alert("Task Updated!");
+
+
 
   // reset the form by removing the task id and changing the button text back to normal
   // remove data attribute from form
@@ -203,6 +224,15 @@ const taskStatusChangeHandler = (event) => {
     // * tasksToDoEl, tasksInProgressEl, and tasksCompletedEl are references to the <ul> element
     // * If the user selects "In Progress" from the dropdown, it will append the current task item to the <ul id="tasks-in-progress"> element with 
     // the tasksInProgressEl.appendChild(taskSelected) method.
+
+    // UPDATE TASK'S IN TASK ARRAY
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].id === parseInt(taskId)) {
+        tasks[i].status = statusValue;
+      }
+    }
+    // VERIFY TASKS UPDATE IN TASK ARRAY
+    console.log(tasks);
 };
 
 // FUNCTION - EDIT TASK ACTION
@@ -234,9 +264,24 @@ const editTask = (taskId) => {
 // FUNCTION - DELETE TASK ACTION
 // ---------------------------------------------------------------------------------------------------------------------------------
 const deleteTask = (taskId) => { // call this function from taskButtonHandler()
+
   // find task list element with taskId value and remove it
   let taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
   taskSelected.remove();
+
+  // create a new array to hold updated list of tasks
+  const updatedTaskArr = [];
+
+  // loop through current tasks
+  for (let i = 0; i < tasks.length; i++) {
+    // if tasks[i].id doesn't match the value of taskId, lets keep that task and push it into the new array
+    if (tasks[i].id !== parseInt(taskId)) {
+      updatedTaskArr.push(tasks[i]);
+    }
+  }
+
+  // reassign tasks array to be the same as updatedTaskArr
+  tasks = updatedTaskArr; 
 };
 
 // EVENT LISTENERS AND CONSOLE LOGS
