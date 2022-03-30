@@ -4,6 +4,7 @@
 
 
 
+
   // EXTRA VARIANT CODE
 // ---------------------------------------------------------------------------------------------------------------------------------
   
@@ -88,8 +89,6 @@ const createTaskEl = (taskDataObj) => {
   // CHECK THAT NEW taskDataObj PROPERTY GETS TO THE FUNCTION VIA THE taskDataObj PARAMETER THAT WE SET UP
   console.log(taskDataObj); // submit a new task to check
   console.log(taskDataObj.status); // submit a new task to check
-
-  
 };
 
 
@@ -161,9 +160,6 @@ const completeEditTask = (taskName, taskType, taskId) => { // this parameter sho
     }
   }
 
-    // SAVE TASKS TO LOCAL STORAGE
-    saveTasks();
-
   alert("Task Updated!");
 
 
@@ -173,7 +169,9 @@ const completeEditTask = (taskName, taskType, taskId) => { // this parameter sho
 
   // UPDATE formEl button to go back to saying 'Add Task' instead of 'Edit Task'
   formEl.querySelector("#save-task").textContent = "Add Task";
-  
+
+  // SAVE TASKS TO LOCAL STORAGE
+  saveTasks();
 };
 
 // FUNCTION - used the manage all the task buttons
@@ -305,7 +303,51 @@ const deleteTask = (taskId) => { // call this function from taskButtonHandler()
 const saveTasks = () => {
   localStorage.setItem('tasks', JSON.stringify(tasks)); // json = js object notation
   // json is a means of organizing and structuring data thats transferred from one place to another
-}
+};
+
+// 1. Gets task items from localStorage.
+// 2. Converts tasks from the string format back into an array of objects.
+// 3. Iterates through a tasks array and creates task elements on the page from it.
+const loadTasks = () => {
+  // reassign the tasks variable to whatever localStorage returns.
+  let savedTasks = localStorage.getItem('tasks'); // cannot be a constant variable since will be reassigned
+  console.log(savedTasks); // output of log below is the stringified version of the task array:
+  // [
+      // {"name":"testOne","type":"Print","status":"to do","id":0},
+      // {"name":"testTwo","type":"Web","status":"in progress","id":1},
+      // {"name":"testThree","type":"Print","status":"completed","id":2}
+  // ]
+
+  // check if 'tasks' is equal to null
+  if (!savedTasks) {
+    return false;
+  }
+    console.log('Saved Tasks Found');
+    // else { load up saved tasks}
+    
+    // data in localStorage currently in string format, so parse it into array of objects
+    savedTasks = JSON.parse(savedTasks);  
+    console.log(savedTasks); // output of log below is the object version of the task array:
+    // Object
+      // id: 0
+      // name: "testOne"
+      // status: "to do"
+      // type: "Print"
+      //   Object Prototype
+      //     1 {name: "testTwo", type: "Web", status: "completed", id: 1}
+      //     2 {name: "testThree", type: "Mobile", status: "in progress", id: 2}
+
+      for (let i = 0; i < savedTasks.length; i++) { // iterate over and create DOM elements and print them to the page
+        console.log(savedTasks[i]); // prints all task objects we've created one by one
+        // log output : 
+        //  {name: "testOne", type: "Print", status: "to do", id: 0} 
+        //  {name: "testTwo", type: "Web", status: "completed", id: 1} 
+        //  {name: "testThree", type: "Mobile", status: "in progress", id: 2} 
+          
+          // pass each task object into the createTaskEl()
+          createTaskEl(savedTasks[i]);
+      }
+    };  
 
 
 // EVENT LISTENERS AND CONSOLE LOGS
@@ -324,5 +366,10 @@ pageContentEl.addEventListener("change", taskStatusChangeHandler);
 // Second click to choose an option fires on the <option> element instead of the <select> element.
 // Change event that triggers, as the name implies, any time a form element's value changes.
 // If an element that has parent elements is clicked, the click event bubbles, or travels, upwards to its parents.
+loadTasks();
+
+
+
+
 
 
